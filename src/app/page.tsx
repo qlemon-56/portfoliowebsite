@@ -7,30 +7,36 @@ import { useMouse } from "@uidotdev/usehooks";
 import p5 from "p5";
 import { Dock, DockIcon } from "@/components/ui/dock";
 import Link from "next/link";
+import { FlickeringGrid } from "@/components/ui/flickering-grid";
 
 type colorPalette = {
   bubblesA: string; //small bubbles
   bubblesB: string; // big bubbles
   foreground: string;
   background: string;
-  text: string;
+  textMain: string;
+  textSecondary: string;
 };
 
-const colorSettings: colorPalette[] = [
-  {
+const colorSettings = {
+  themeA: {
     bubblesA: "#4e5880",
     bubblesB: "#323c61",
-    foreground: "#323c61",
-    background: "#323c61",
-    text: "#323c61",
+    foreground: "#ffffff",
+    background: "#080808",
+    textMain: "#6981d6",
+    textSecondary: "#f2f5ff",
   },
-];
+};
 
-let rows = 30;
-let cols = 30;
-let diameter = 15;
-let padding = 20; // Space from canvas edges
+// drawing variables
+let rows = 10;
+let cols = 10;
+// circle diameters
+let diameter = 50;
 
+// Space from canvas edges
+let padding = 10;
 let t = 0;
 
 const sketch: Sketch = (p5) => {
@@ -52,7 +58,7 @@ const sketch: Sketch = (p5) => {
   };
 
   p5.draw = () => {
-    p5.background("#000000");
+    p5.background(colorSettings.themeA.background);
 
     let cellW = (window.innerWidth - 2 * padding) / cols;
     let cellH = (window.innerHeight - 2 * padding) / rows;
@@ -64,8 +70,8 @@ const sketch: Sketch = (p5) => {
 
         let r = funRadius(funPattern(j, i, t));
         if (funPattern(j, i, t) < 0)
-          p5.fill("#4e5880"); // small bubbles
-        else p5.fill("#323c61"); // big bubbles
+          p5.fill(colorSettings.themeA.bubblesA); // small bubbles
+        else p5.fill(colorSettings.themeA.bubblesB); // big bubbles
         p5.circle(x, y, r);
       }
     }
@@ -82,64 +88,165 @@ function Canvas() {
   return <P5Canvas sketch={sketch} />;
 }
 
+type MainContentProps = {
+  currentState: number;
+};
+
+function MainContent({ currentState }: MainContentProps) {
+  if (currentState == 1) {
+    return (
+      <div className="w-2/3 text-base leading-relaxed">
+        I'm a 1st year student studying Electronic and Computer Engineering at
+        the University of York I'm currently working on XXXX, but I'm also
+        interested in finance and technology.
+      </div>
+    );
+  } else if (currentState == 2) {
+    return (
+      <div className="w-2/3 text-base leading-relaxed">
+        Projects
+      </div>
+    );
+  } else if (currentState == 3) {
+    return (
+      <div className="w-2/3 text-base leading-relaxed">
+        Archive
+      </div>
+    );
+  }
+
+  return <></>;
+}
+
+type NavBarProps = {
+  currentState: number;
+  setCurrentState: (state: number) => void;
+};
+
+function NavBar({ currentState, setCurrentState }: NavBarProps) {
+  const navItems = [
+    { label: "About me", state: 1 },
+    { label: "Projects", state: 2 },
+    { label: "Archive", state: 3 },
+  ];
+
+  return (
+    <div className="w-full flex space-x-5 pl-5 items-center border-gray-200">
+      {navItems.map((item) => (
+        <h1
+          key={item.state}
+          onClick={() => setCurrentState(item.state)}
+          className={`cursor-pointer transition-all ease-in-out duration-150 p-2 ${
+            currentState === item.state
+              ? "opacity-100 border-b-3"
+              : "hover:opacity-60"
+          }`}
+        >
+          {item.label}
+        </h1>
+      ))}
+    </div>
+  );
+}
+/*
+<FlickeringGrid
+            className="fixed inset-0 z-0 [mask-image:radial-gradient(450px_circle_at_center,white,transparent)]"
+            squareSize={4}
+            gridGap={6}
+            color="#60A5FA"
+            maxOpacity={0.8}
+            flickerChance={0.1}
+            height={window.innerHeight}
+            width={window.innerWidth}
+          />
+*/
+
 export default function Home() {
+  const [currentState, setCurrentState] = useState(1);
+
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Canvas background */}
-      <div className="fixed inset-0 z-0">
-        <Canvas />
-      </div>
 
       {/* Content overlay */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center">
-        <div className="justify w-2/3 ">
+      <div
+        className="relative min-h-screen flex flex-col items-center justify-center"
+        style={{ color: colorSettings.themeA.textMain }}
+      >
+        <div className="w-2/3 h-3/4">
+          {/*Main AREA*/}
           <div className="flex">
             {/* Main content */}
-            <div
-              id="areaone"
-              className="w-3/4 overflow-hidden border-1 flex-auto text-white"
-              style={{ backgroundColor: "rgba(0, 0, 0, 1)" }}
+
+            <main
+              className="w-3/4 overflow-hidden border-1 flex-auto opacity-95"
+              style={{ backgroundColor: colorSettings.themeA.foreground }}
             >
-              <main className="flex items-center justify-center w-full gap-12 py-16 px-12">
-                <div className="w-1/3">
-                  <p className="text-lg">Hey I'm</p>
-                  <div>
-                    <p className="text-7xl font-bold">Mark</p>
-                    <p className="text-2xl">Imade</p>
-                  </div>
-                </div>
-                <div className="w-2/3 text-base leading-relaxed">
-                  I'm a 1st year student studying Electronic and Computer
-                  Engineering at the University of York I'm currently working on
-                  XXXX, but I'm also interested in finance and technology.
-                </div>
-              </main>
-              <header className="w-full py-6 px-8 flex justify-between items-center border-b border-gray-200">
-                <div className="w-3/4">
-                  <span className="mx-4">About Me</span>
-                  <span className="mx-4">Projects</span>
-                </div>
-                <div className="text-sm">9:18 PM</div>
-              </header>
-            </div>
+              <div className="flex items-center w-full">
+                <p className="text-lg pl-5 pt-5">
+                  Mark
+                  <br />
+                  Imade
+                </p>
+              </div>
+              <div className="h-100 p-5">
+                <MainContent currentState={currentState} />
+              </div>
+              {/* Nav Bar */}
+              <NavBar
+                currentState={currentState}
+                setCurrentState={setCurrentState}
+              />
+            </main>
 
             {/* Side panel */}
             <div
               id="areatwo"
               className="w-1/4 overflow-hidden flex-auto pl-5 ml-2 border-1"
-              style={{ backgroundColor: "rgba(0, 0, 0, 1)" }}
             >
-              <div className="w-full bg-amber-50">
-                <span>hello</span>
+              <div className="w-full pt-2">
+                <span
+                  className=""
+                  style={{ color: colorSettings.themeA.textMain }}
+                >
+                  interests
+                </span>
+                <div style={{ color: colorSettings.themeA.textSecondary }}>
+                  <a
+                    href="https://www.google.com"
+                    className="transition-all ease-in-out duration-150 hover:text-myBlue"
+                  >
+                    books
+                  </a>{" "}
+                  <br />
+                  <a
+                    href="https://www.google.com"
+                    className="transition-all ease-in-out duration-150 hover:text-myBlue"
+                  >
+                    podcasts
+                  </a>{" "}
+                  <br />
+                  <a
+                    href="https://www.google.com"
+                    className="transition-all ease-in-out duration-150 hover:text-myBlue"
+                  >
+                    writing
+                  </a>{" "}
+                  <br />
+                </div>
               </div>
             </div>
-
           </div>
 
-          <footer className="bottom-0 h-5% border-1 mt-2"
-              style={{ backgroundColor: "rgba(0, 0, 0, 1)" }}
+          {/* FOOTER AREA */}
+          <footer
+            className="bottom-0 h-5% border-1 mt-2"
+            style={{
+              backgroundColor: colorSettings.themeA.foreground,
+              color: colorSettings.themeA.textMain,
+            }}
           >
-            <div className="flex justify-between text-xs text-white">
+            <div className="flex justify-between text-xs">
               <span className="ml-5">© Mark Imade 2026</span>
               <div className="flex space-x-4">
                 <a
@@ -172,5 +279,3 @@ export default function Home() {
     </div>
   );
 }
-
-("https://openprocessing.org/@jcponcemath/2146438");
