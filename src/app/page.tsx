@@ -38,6 +38,9 @@ function MainContent({ currentState }: MainContentProps) {
       <div className="w-2/3 text-base leading-relaxed">
         I'm a 1st year student studying Electronic and Computer Engineering at
         the University of York I'm currently working on ____
+        <br />
+
+        **UNDER CONSTRUCTION _ STAY TUNED FOR UPDATES
       </div>
     );
   } else if (currentState == 2) {
