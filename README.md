@@ -18,6 +18,15 @@ pnpm dev
 bun dev
 ```
 ---
+## Technologies used
++ Vercel
++ Next.js
++ Typescript
++ Shaders.js
++ Magic UI
++ Tailwind CSS
+
+---
 ## Inspirations
 
 ```
