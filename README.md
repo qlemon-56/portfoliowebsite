@@ -1,5 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+**Mark's Portfolio Website**
+---
+Hey, this is my portfolio website that I've created with Nxet.js, TypeScript, and this wonderful library called Shaders. Please feel free to copy anything that inspires you :). I've also listed a couple of websites I got inspiration from whilst designing mine.
 
+---
 ## Getting Started
 
 First, run the development server:
@@ -13,12 +16,12 @@ pnpm dev
 # or
 bun dev
 ```
-
+---
 ## Inspirations
 
+```
 [Darshan Paccha](https://d1rshan.me/)
 [Shawn Silva](https://www.zzzzshawn.cloud/)
 [Keita Yamada](https://p5aholic.me/)
-
 [JCponcemath]("https://openprocessing.org/@jcponcemath/2146438");
-
+```
