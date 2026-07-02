@@ -1,92 +1,32 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
-import { type Sketch } from "@p5-wrapper/react";
-import { P5Canvas } from "@p5-wrapper/react";
-import { useMouse } from "@uidotdev/usehooks";
-import p5 from "p5";
-import { Dock, DockIcon } from "@/components/ui/dock";
 import Link from "next/link";
-import { FlickeringGrid } from "@/components/ui/flickering-grid";
+import {
+  Shader,
+  FlowingGradient,
+  FilmGrain,
+} from "shaders/react";
 
 type colorPalette = {
-  bubblesA: string; //small bubbles
-  bubblesB: string; // big bubbles
-  foreground: string;
-  background: string;
   textMain: string;
   textSecondary: string;
+  primaryAccent: string;
+  secondaryAccent: string;
+  deepBackground: string;
+  tertiaryAccent: string;
 };
 
 const colorSettings = {
   themeA: {
-    bubblesA: "#4e5880",
-    bubblesB: "#323c61",
-    foreground: "#ffffff",
-    background: "#080808",
     textMain: "#6981d6",
     textSecondary: "#f2f5ff",
+    primaryAccent: "#2C5EAD",
+    secondaryAccent: "#1591DC",
+    deepBackground: "#4BB8FA",
+    tertiaryAccent: "#C4E2F5",
   },
 };
-
-// drawing variables
-let rows = 10;
-let cols = 10;
-// circle diameters
-let diameter = 50;
-
-// Space from canvas edges
-let padding = 10;
-let t = 0;
-
-const sketch: Sketch = (p5) => {
-  // the sketch function is basically at the same scope as the base p5 ide so just place all the code in here
-  let u = 20;
-  let v = -20;
-
-  let funPattern = (x: number, y: number, t: number) => {
-    let scl = 1;
-    //return p5.cos( p5.cos(scl * (x ) - t ) + 2 * p5.cos( scl *(y - t) - p5.abs(p5.sin(scl * (x) - t ) ))  );
-    return p5.sin((y - 7.5) / (x - 7.5) + 5 * t);
-  };
-
-  let funRadius = (x: number) =>
-    diameter * p5.abs(2 / (1 + p5.exp(-5 * x)) - 1);
-
-  p5.setup = () => {
-    p5.createCanvas(window.innerWidth, window.innerHeight);
-  };
-
-  p5.draw = () => {
-    p5.background(colorSettings.themeA.background);
-
-    let cellW = (window.innerWidth - 2 * padding) / cols;
-    let cellH = (window.innerHeight - 2 * padding) / rows;
-
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        let x = i * cellW + cellW / 2 + padding;
-        let y = j * cellH + cellH / 2 + padding;
-
-        let r = funRadius(funPattern(j, i, t));
-        if (funPattern(j, i, t) < 0)
-          p5.fill(colorSettings.themeA.bubblesA); // small bubbles
-        else p5.fill(colorSettings.themeA.bubblesB); // big bubbles
-        p5.circle(x, y, r);
-      }
-    }
-
-    t += 0.003;
-  };
-
-  p5.windowResized = () => {
-    p5.resizeCanvas(window.innerWidth, window.innerHeight);
-  };
-};
-
-function Canvas() {
-  return <P5Canvas sketch={sketch} />;
-}
 
 type MainContentProps = {
   currentState: number;
@@ -97,25 +37,40 @@ function MainContent({ currentState }: MainContentProps) {
     return (
       <div className="w-2/3 text-base leading-relaxed">
         I'm a 1st year student studying Electronic and Computer Engineering at
-        the University of York I'm currently working on XXXX, but I'm also
-        interested in finance and technology.
+        the University of York I'm currently working on ____
       </div>
     );
   } else if (currentState == 2) {
     return (
       <div className="w-2/3 text-base leading-relaxed">
-        Projects
+        <div className="border-t-1 border-b-1 h-40 mt-2 pt-2 ">
+          <h4 className="font-bold">Model To Market</h4>
+          <p className="h-20">Trading hackathon where I built a Z score mean reversion bot</p>
+          <span>
+            <div className="font-extralight">
+              Python - MT5 API - Claude Agents
+            </div>
+          </span>
+        </div>
       </div>
     );
   } else if (currentState == 3) {
     return (
       <div className="w-2/3 text-base leading-relaxed">
-        Archive
+        <div>Me @AI Engine's Model to Market Hackathon</div>
+        <div>Me @Deutsche Bank</div>
+        <div>Me @Manchester Formula Fusion 2026</div>
+        <div>Me @Silverstone - FSUK 2026</div>
+
       </div>
     );
   }
 
   return <></>;
+}
+
+function Project() {
+
 }
 
 type NavBarProps = {
@@ -148,18 +103,6 @@ function NavBar({ currentState, setCurrentState }: NavBarProps) {
     </div>
   );
 }
-/*
-<FlickeringGrid
-            className="fixed inset-0 z-0 [mask-image:radial-gradient(450px_circle_at_center,white,transparent)]"
-            squareSize={4}
-            gridGap={6}
-            color="#60A5FA"
-            maxOpacity={0.8}
-            flickerChance={0.1}
-            height={window.innerHeight}
-            width={window.innerWidth}
-          />
-*/
 
 export default function Home() {
   const [currentState, setCurrentState] = useState(1);
@@ -167,20 +110,30 @@ export default function Home() {
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Canvas background */}
-
+      <div className="fixed z-0 inset-0">
+        <Shader className="w-full h-full">
+          <FilmGrain strength={0.1} animated={true}>
+            <FlowingGradient
+              colorA={colorSettings.themeA.deepBackground}
+              colorB={colorSettings.themeA.primaryAccent}
+              colorC={colorSettings.themeA.secondaryAccent}
+              colorD={colorSettings.themeA.tertiaryAccent}
+              speed={0.5}
+              distortion={0.2}
+            />
+          </FilmGrain>
+        </Shader>
+      </div>
       {/* Content overlay */}
-      <div
-        className="relative min-h-screen flex flex-col items-center justify-center"
-        style={{ color: colorSettings.themeA.textMain }}
-      >
+      <div className="relative min-h-screen flex flex-col items-center justify-center" style={{color: colorSettings.themeA.textSecondary  }}>
         <div className="w-2/3 h-3/4">
           {/*Main AREA*/}
           <div className="flex">
             {/* Main content */}
 
-            <main
-              className="w-3/4 overflow-hidden border-1 flex-auto opacity-95"
-              style={{ backgroundColor: colorSettings.themeA.foreground }}
+            <div
+              id="areaone"
+              className="w-3/4 overflow-hidden border-1 flex-auto"
             >
               <div className="flex items-center w-full">
                 <p className="text-lg pl-5 pt-5">
@@ -197,7 +150,7 @@ export default function Home() {
                 currentState={currentState}
                 setCurrentState={setCurrentState}
               />
-            </main>
+            </div>
 
             {/* Side panel */}
             <div
@@ -206,31 +159,30 @@ export default function Home() {
             >
               <div className="w-full pt-2">
                 <span
-                  className=""
-                  style={{ color: colorSettings.themeA.textMain }}
+                  
                 >
                   interests
                 </span>
                 <div style={{ color: colorSettings.themeA.textSecondary }}>
                   <a
                     href="https://www.google.com"
-                    className="transition-all ease-in-out duration-150 hover:text-myBlue"
+                    className="transition-all ease-in-out duration-150 hover:text-myGold"
                   >
                     books
                   </a>{" "}
                   <br />
                   <a
                     href="https://www.google.com"
-                    className="transition-all ease-in-out duration-150 hover:text-myBlue"
+                    className="transition-all ease-in-out duration-150 hover:text-myGold"
                   >
                     podcasts
                   </a>{" "}
                   <br />
                   <a
                     href="https://www.google.com"
-                    className="transition-all ease-in-out duration-150 hover:text-myBlue"
+                    className="transition-all ease-in-out duration-150 hover:text-myGold"
                   >
-                    writing
+                    creators
                   </a>{" "}
                   <br />
                 </div>
@@ -242,8 +194,7 @@ export default function Home() {
           <footer
             className="bottom-0 h-5% border-1 mt-2"
             style={{
-              backgroundColor: colorSettings.themeA.foreground,
-              color: colorSettings.themeA.textMain,
+              color: colorSettings.themeA.textSecondary,
             }}
           >
             <div className="flex justify-between text-xs">
@@ -264,6 +215,14 @@ export default function Home() {
                   className="border-b-2 border-transparent transition-all duration-150 ease-in-out hover:text-gray-300 hover:border-white"
                 >
                   Github
+                </a>
+                <a
+                  href="./Resume_Imade%20Mark.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="border-b-2 border-transparent transition-all duration-150 ease-in-out hover:text-gray-300 hover:border-white"
+                >
+                  Resume
                 </a>
                 <a
                   href="mailto:markimade01@gmail.com"
