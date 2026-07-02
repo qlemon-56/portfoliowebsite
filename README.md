@@ -2,7 +2,7 @@
 ---
 Hey, this is my portfolio website that I've created with Nxet.js, TypeScript, and this wonderful library called Shaders. Please feel free to copy anything that inspires you :). I've also listed a couple of websites I got inspiration from whilst designing mine.
 
-*Please note this is a work in progress and I will make updates once I have the chance*
+<h5>*Please note this is a work in progress and I will make updates once I have the chance*</h5
 ---
 ## Getting Started
 
