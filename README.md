@@ -32,5 +32,5 @@ bun dev
 + [Darshan Paccha](https://d1rshan.me/)
 + [Shawn Silva](https://www.zzzzshawn.cloud/)
 + [Keita Yamada](https://p5aholic.me/)
-+ [JCponcemath]("https://openprocessing.org/@jcponcemath/2146438");
++ [JCponcemath]("https://openprocessing.org/@jcponcemath/2146438")
 
