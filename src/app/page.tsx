@@ -2,11 +2,12 @@
 import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import {
-  Shader,
-  FlowingGradient,
-  FilmGrain,
-} from "shaders/react";
+import { Shader, FlowingGradient, FilmGrain } from "shaders/react";
+import { ScrollArea } from "radix-ui";
+import { Navbar } from "@/components/user/navbar";
+import { ProfileContent } from "@/components/user/profile-content";
+import { InterestSidebar } from "@/components/user/interest-sidebar";
+import { PageFooter } from "@/components/user/page-footer";
 
 type colorPalette = {
   textMain: string;
@@ -28,86 +29,9 @@ const colorSettings = {
   },
 };
 
-type MainContentProps = {
-  currentState: number;
-};
-
-function MainContent({ currentState }: MainContentProps) {
-  if (currentState == 1) {
-    return (
-      <div className="w-2/3 text-base leading-relaxed">
-        I'm a 1st year student studying Electronic and Computer Engineering at
-        the University of York I'm currently working on ____
-        <br />
-
-        **UNDER CONSTRUCTION _ STAY TUNED FOR UPDATES
-      </div>
-    );
-  } else if (currentState == 2) {
-    return (
-      <div className="w-2/3 text-base leading-relaxed">
-        <div className="border-t-1 border-b-1 h-40 mt-2 pt-2 ">
-          <h4 className="font-bold">Model To Market</h4>
-          <p className="h-20">Trading hackathon where I built a Z score mean reversion bot</p>
-          <span>
-            <div className="font-extralight">
-              Python - MT5 API - Claude Agents
-            </div>
-          </span>
-        </div>
-      </div>
-    );
-  } else if (currentState == 3) {
-    return (
-      <div className="w-2/3 text-base leading-relaxed">
-        <div>Me @AI Engine's Model to Market Hackathon</div>
-        <div>Me @Deutsche Bank</div>
-        <div>Me @Manchester Formula Fusion 2026</div>
-        <div>Me @Silverstone - FSUK 2026</div>
-
-      </div>
-    );
-  }
-
-  return <></>;
-}
-
-function Project() {
-
-}
-
-type NavBarProps = {
-  currentState: number;
-  setCurrentState: (state: number) => void;
-};
-
-function NavBar({ currentState, setCurrentState }: NavBarProps) {
-  const navItems = [
-    { label: "About me", state: 1 },
-    { label: "Projects", state: 2 },
-    { label: "Archive", state: 3 },
-  ];
-
-  return (
-    <div className="w-full flex space-x-5 pl-5 items-center border-gray-200">
-      {navItems.map((item) => (
-        <h1
-          key={item.state}
-          onClick={() => setCurrentState(item.state)}
-          className={`cursor-pointer transition-all ease-in-out duration-150 p-2 ${
-            currentState === item.state
-              ? "opacity-100 border-b-3"
-              : "hover:opacity-60"
-          }`}
-        >
-          {item.label}
-        </h1>
-      ))}
-    </div>
-  );
-}
-
+// Home component (don't edit here)
 export default function Home() {
+  
   const [currentState, setCurrentState] = useState(1);
 
   return (
@@ -128,7 +52,10 @@ export default function Home() {
         </Shader>
       </div>
       {/* Content overlay */}
-      <div className="relative min-h-screen flex flex-col items-center justify-center" style={{color: colorSettings.themeA.textSecondary  }}>
+      <div
+        className="relative min-h-screen flex flex-col items-center justify-center"
+        style={{ color: colorSettings.themeA.textSecondary }}
+      >
         <div className="w-2/3 h-3/4">
           {/*Main AREA*/}
           <div className="flex">
@@ -136,7 +63,7 @@ export default function Home() {
 
             <div
               id="areaone"
-              className="w-3/4 overflow-hidden border-1 flex-auto"
+              className="w-3/4 overflow-hidden border flex-auto"
             >
               <div className="flex items-center w-full">
                 <p className="text-lg pl-5 pt-5">
@@ -146,96 +73,19 @@ export default function Home() {
                 </p>
               </div>
               <div className="h-100 p-5">
-                <MainContent currentState={currentState} />
+                <ProfileContent currentState={currentState} />
               </div>
               {/* Nav Bar */}
-              <NavBar
+              <Navbar
                 currentState={currentState}
                 setCurrentState={setCurrentState}
               />
             </div>
 
-            {/* Side panel */}
-            <div
-              id="areatwo"
-              className="w-1/4 overflow-hidden flex-auto pl-5 ml-2 border-1"
-            >
-              <div className="w-full pt-2">
-                <span
-                  
-                >
-                  interests
-                </span>
-                <div style={{ color: colorSettings.themeA.textSecondary }}>
-                  <a
-                    href="https://www.google.com"
-                    className="transition-all ease-in-out duration-150 hover:text-myGold"
-                  >
-                    books
-                  </a>{" "}
-                  <br />
-                  <a
-                    href="https://www.google.com"
-                    className="transition-all ease-in-out duration-150 hover:text-myGold"
-                  >
-                    podcasts
-                  </a>{" "}
-                  <br />
-                  <a
-                    href="https://www.google.com"
-                    className="transition-all ease-in-out duration-150 hover:text-myGold"
-                  >
-                    creators
-                  </a>{" "}
-                  <br />
-                </div>
-              </div>
-            </div>
+            <InterestSidebar textSecondary={colorSettings.themeA.textSecondary} />
           </div>
 
-          {/* FOOTER AREA */}
-          <footer
-            className="bottom-0 h-5% border-1 mt-2"
-            style={{
-              color: colorSettings.themeA.textSecondary,
-            }}
-          >
-            <div className="flex justify-between text-xs">
-              <span className="ml-5">© Mark Imade 2026</span>
-              <div className="flex space-x-4">
-                <a
-                  href="https://www.linkedin.com/in/mark-imade/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="border-b-2 border-transparent transition-all duration-150 ease-in-out hover:text-gray-300 hover:border-white"
-                >
-                  LinkedIn
-                </a>
-                <a
-                  href="https://github.com/qlemon-56"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="border-b-2 border-transparent transition-all duration-150 ease-in-out hover:text-gray-300 hover:border-white"
-                >
-                  Github
-                </a>
-                <a
-                  href="./Resume_Imade%20Mark.pdf"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="border-b-2 border-transparent transition-all duration-150 ease-in-out hover:text-gray-300 hover:border-white"
-                >
-                  Resume
-                </a>
-                <a
-                  href="mailto:markimade01@gmail.com"
-                  className="border-b-2 border-transparent transition-all duration-150 ease-in-out hover:text-gray-300 hover:border-white"
-                >
-                  markimade01@gmail.com
-                </a>
-              </div>
-            </div>
-          </footer>
+          <PageFooter textSecondary={colorSettings.themeA.textSecondary} />
         </div>
       </div>
     </div>
