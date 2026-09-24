@@ -4,12 +4,15 @@ Hey, this is my portfolio website that I've created with Nxet.js, TypeScript, an
 
 <h5>*Please note this is a work in progress*</h5>
 
+View it here! [markimade](https://markimade.me)
+
 ---
 ## Technologies used
 + Vercel
 + Next.js
 + Typescript
 + Shaders.js
++ Shadcn
 + Magic UI
 + Tailwind CSS
 

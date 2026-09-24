@@ -1,26 +1,13 @@
 "use client";
-import Image from "next/image";
-import React, { useEffect, useState, useRef } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import { Shader, FlowingGradient, FilmGrain } from "shaders/react";
-import { ScrollArea } from "radix-ui";
 import { Navbar } from "@/components/user/navbar";
 import { ProfileContent } from "@/components/user/profile-content";
 import { InterestSidebar } from "@/components/user/interest-sidebar";
 import { PageFooter } from "@/components/user/page-footer";
 
-type colorPalette = {
-  textMain: string;
-  textSecondary: string;
-  primaryAccent: string;
-  secondaryAccent: string;
-  deepBackground: string;
-  tertiaryAccent: string;
-};
-
 const colorSettings = {
   themeA: {
-    textMain: "#6981d6",
     textSecondary: "#f2f5ff",
     primaryAccent: "#2C5EAD",
     secondaryAccent: "#1591DC",
@@ -29,10 +16,22 @@ const colorSettings = {
   },
 };
 
-// Home component (don't edit here)
 export default function Home() {
-  
   const [currentState, setCurrentState] = useState(1);
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const [selectedExperience, setSelectedExperience] = useState<string | null>(null);
+
+  const clearSelection = () => {
+    setSelectedProject(null);
+    setSelectedExperience(null);
+  };
+
+  const handleStateChange = (state: number) => {
+    clearSelection();
+    setCurrentState(state);
+  };
+
+  const isDetailOpen = selectedProject !== null || selectedExperience !== null;
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
@@ -61,31 +60,65 @@ export default function Home() {
           <div className="flex">
             {/* Main content */}
 
-            <div
-              id="areaone"
-              className="w-3/4 overflow-hidden border flex-auto"
-            >
-              <div className="flex items-center w-full">
+            <div id="areaone" className="w-3/4 overflow-hidden border flex-auto">
+              <div className="flex w-full items-center justify-between pr-5">
                 <p className="text-lg pl-5 pt-5">
                   Mark
                   <br />
                   Imade
                 </p>
+                {isDetailOpen && (
+                  <button
+                    type="button"
+                    onClick={clearSelection}
+                    className="pt-5 text-sm transition-opacity hover:opacity-60"
+                  >
+                    Back to projects
+                  </button>
+                )}
               </div>
-              <div className="h-100 p-5">
-                <ProfileContent currentState={currentState} />
-              </div>
-              {/* Nav Bar */}
-              <Navbar
-                currentState={currentState}
-                setCurrentState={setCurrentState}
-              />
+              {isDetailOpen ? (
+                <div className="min-h-200 p-5">
+                  <div className="pt-10">
+                    <ProfileContent
+                      currentState={currentState}
+                      selectedProject={selectedProject}
+                      selectedExperience={selectedExperience}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div
+                    className={`h-100 p-5 ${
+                      currentState === 2
+                        ? "experience-scroll overflow-y-auto"
+                        : ""
+                    }`}
+                  >
+                    <ProfileContent
+                      currentState={currentState}
+                      projectAction={setSelectedProject}
+                      experienceAction={setSelectedExperience}
+                    />
+                  </div>
+                  {/* Nav Bar */}
+                  <Navbar
+                    currentState={currentState}
+                    setCurrentState={handleStateChange}
+                  />
+                </>
+              )}
             </div>
 
-            <InterestSidebar textSecondary={colorSettings.themeA.textSecondary} />
+            {!isDetailOpen && (
+              <InterestSidebar />
+            )}
           </div>
 
-          <PageFooter textSecondary={colorSettings.themeA.textSecondary} />
+          {!isDetailOpen && (
+            <PageFooter />
+          )}
         </div>
       </div>
     </div>
