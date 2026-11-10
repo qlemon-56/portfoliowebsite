@@ -18,23 +18,13 @@ const colorSettings = {
 
 export default function Home() {
   const [currentState, setCurrentState] = useState(1);
-  const [selectedProject, setSelectedProject] = useState<string | null>(null);
-  const [selectedExperience, setSelectedExperience] = useState<string | null>(null);
-
-  const clearSelection = () => {
-    setSelectedProject(null);
-    setSelectedExperience(null);
-  };
 
   const handleStateChange = (state: number) => {
-    clearSelection();
     setCurrentState(state);
   };
 
-  const isDetailOpen = selectedProject !== null || selectedExperience !== null;
-
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative min-h-dvh w-full overflow-hidden">
       {/* Canvas background */}
       <div className="fixed z-0 inset-0">
         <Shader className="w-full h-full">
@@ -52,73 +42,45 @@ export default function Home() {
       </div>
       {/* Content overlay */}
       <div
-        className="relative min-h-screen flex flex-col items-center justify-center"
+        className="relative flex min-h-dvh flex-col items-center justify-center py-4 sm:py-6"
         style={{ color: colorSettings.themeA.textSecondary }}
       >
-        <div className="w-2/3 h-3/4">
+        <div className="flex h-[min(84dvh,52rem)] landscape:h-[min(50dvh,52rem)] min-h-[min(28rem,calc(100dvh-3rem))] w-[min(94vw,72rem)] flex-col">
           {/*Main AREA*/}
-          <div className="flex">
+          <div className="flex min-h-0 flex-1 flex-col sm:flex-row">
             {/* Main content */}
 
-            <div id="areaone" className="w-3/4 overflow-hidden border flex-auto">
-              <div className="flex w-full items-center justify-between pr-5">
+            <div
+              id="areaone"
+              className="flex min-h-0 min-w-0 flex-[3] flex-col overflow-hidden border"
+            >
+              <div className="flex w-full shrink-0 items-center justify-between pr-5">
                 <p className="text-lg pl-5 pt-5">
                   Mark
                   <br />
                   Imade
                 </p>
-                {isDetailOpen && (
-                  <button
-                    type="button"
-                    onClick={clearSelection}
-                    className="pt-5 text-sm transition-opacity hover:opacity-60"
-                  >
-                    Back to projects
-                  </button>
-                )}
               </div>
-              {isDetailOpen ? (
-                <div className="min-h-200 p-5">
-                  <div className="pt-10">
-                    <ProfileContent
-                      currentState={currentState}
-                      selectedProject={selectedProject}
-                      selectedExperience={selectedExperience}
-                    />
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div
-                    className={`h-100 p-5 ${
-                      currentState === 2
-                        ? "experience-scroll overflow-y-auto"
-                        : ""
-                    }`}
-                  >
-                    <ProfileContent
-                      currentState={currentState}
-                      projectAction={setSelectedProject}
-                      experienceAction={setSelectedExperience}
-                    />
-                  </div>
-                  {/* Nav Bar */}
-                  <Navbar
-                    currentState={currentState}
-                    setCurrentState={handleStateChange}
-                  />
-                </>
-              )}
+              <div
+                className="content-scroll min-h-0 flex-1 overflow-y-auto p-5"
+              >
+                <ProfileContent currentState={currentState} />
+              </div>
+              {/* Nav Bar */}
+              <div className="shrink-0">
+                <Navbar
+                  currentState={currentState}
+                  setCurrentState={handleStateChange}
+                />
+              </div>
             </div>
 
-            {!isDetailOpen && (
-              <InterestSidebar />
-            )}
+            <InterestSidebar />
           </div>
 
-          {!isDetailOpen && (
+          <div className="mt-2 shrink-0">
             <PageFooter />
-          )}
+          </div>
         </div>
       </div>
     </div>

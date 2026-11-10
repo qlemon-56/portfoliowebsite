@@ -19,10 +19,10 @@ const footerLinks = [
 
 export function PageFooter() {
   return (
-    <footer className="bottom-0 mt-2 border h-5%">
-      <div className="flex justify-between text-xs">
-        <span className="ml-5">© Mark Imade 2026</span>
-        <div className="flex space-x-4">
+    <footer className="border px-3 py-1">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs">
+        <span>© Mark Imade 2026</span>
+        <div className="flex flex-wrap gap-x-4 gap-y-1">
           {footerLinks.map(({ label, href }) => {
             const isExternal = href.startsWith("http");
 
