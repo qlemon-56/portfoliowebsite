@@ -73,10 +73,21 @@ export function ProfileContent({ currentState }: ProfileContentProps) {
   switch (currentState) {
     case 1:
       return (
-        <div className={baseClassName}>
-          Hey! I&apos;m a 2nd year student studying Electronic and Computer
-          Engineering at the University of York. I am really interested in C++
-          and all things software.
+        <div className={`${baseClassName} space-y-4`}>
+          <p>
+            Hey! I&apos;m a second-year Electronic and Computer Engineering student at
+            the University of York, interested in circuit design and C++ for high-performance applications.
+          </p>
+          <p>
+            Right now, I&apos;m involved in a few student societies. I volunteer
+            as a software developer for YCC, work on electronics as part of York
+            Formula Student, and write finance articles for the York Trading
+            Society.
+          </p>
+          <p>
+            In the next few years, I&apos;d love to work in a field that blends my
+            interests of programming and math and pushes me to keep learning.
+          </p>
         </div>
       );
 

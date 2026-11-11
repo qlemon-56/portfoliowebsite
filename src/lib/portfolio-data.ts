@@ -22,19 +22,19 @@ export const projects: Record<string, Project> = {
     title: "Arvid",
     repository: "https://github.com/DungeonsInteractive/arvid",
     summary: "1st year electronics project 1 submission",
-    technologies: "C++ - STM32",
+    technologies: "C++ - STM32 - PCB Design",
   },
   projectiles: {
-    title: "Projectile engine",
+    title: "Projectile engine (in progress)",
     repository: "https://github.com/qlemon-56/Projectiles",
     summary: "Attempting to replicate my professors projectiles quiz app",
-    technologies: "C++",
+    technologies: "C++ - OpenGL",
   }, 
   loggingservice: {
     title: "Logging Service",
     repository: "https://github.com/qlemon-56/loggingservice",
     summary: "Logging service in C#",
-    technologies: "C#",
+    technologies: "C# - .NET Framework",
   }
 };
 

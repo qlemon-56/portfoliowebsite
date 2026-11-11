@@ -9,7 +9,7 @@ const skillGroups = [
   },
   {
     label: "tools",
-    skills: ["Git", "KiCAD", "Autodesk Fusion", "LTSpice", "Xilinx Vivado", "MATLAB"],
+    skills: ["Git/GitHub", "KiCAD", "Autodesk Fusion", "LTSpice", "Xilinx Vivado", "MATLAB"],
   },
 ];
 
@@ -18,7 +18,7 @@ export function InterestSidebar() {
     <aside
       id="areatwo"
       aria-label="Skills"
-      className="mt-2 min-h-0 min-w-0 flex-[1] overflow-y-auto border pl-5 sm:ml-2 sm:mt-0"
+      className="mt-2 min-h-0 min-w-0 flex-1 overflow-y-auto border pl-5 sm:ml-2 sm:mt-0"
     >
       <div className="w-full space-y-5 pt-5 pr-4">
         <div className="flex items-center gap-3">
